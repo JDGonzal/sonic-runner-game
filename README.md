@@ -49,12 +49,12 @@ npm create vite@latest .
 * `Select a framework:` -> `Vanilla`
 * `Select a variant:` -> `JavaScript`
 2. Borramos estos archivos:
-* **counter.js** 
-* **main.js** 
-* **style.css**
+* **`counter.js`** 
+* **`main.js`** 
+* **`style.css`**
 3. Creamos la carpeta "src" en la raíz del proyecto.
-4. Creamos el archivo **main.js** dentro de "src".
-5. Cambiamos en **index.html** la ruta del `<script` a
+4. Creamos el archivo **`main.js`** dentro de "src".
+5. Cambiamos en **`index.html`** la ruta del `<script` a
 `src="src/main.js"`.
 6. Para probar ejecutamos estos dos comandos en la `TERMINAL`:
 ```bash
@@ -72,7 +72,7 @@ carpeta "public"
 ```bash
 pnpm i kaplay
 ```
-3. En el archivo **main.js**, poner la importación de `kaplay`
+3. En el archivo **`main.js`**, poner la importación de `kaplay`
 e inicializar el `canvas` de `kaplay`:
 ```js
 import kaplay from "kaplay";
@@ -83,7 +83,7 @@ expone la página para ser vista en un browser:
 `pnpm dev`  
 Veremos una cuadrícula similar a esta:  
 ![localhost ## 02](images/2024-10-27_153706.png)
-5. Añadimos parámetros al inicializar el `kaplay` en **main.js**:
+5. Añadimos parámetros al inicializar el `kaplay` en **`main.js`**:
 ```js
 kaplay({
   width: 1920,
@@ -103,10 +103,10 @@ kaplay({
 >Dice que otra versión falla para ser vista en Android, pero lo 
 >tendremos en cuenta una vez llegado al tema.
 > Por ahora la que tengo instalada es `3001.0.0-beta.8`.  
->Revisa la versión en el archivo **package.json**.
+>Revisa la versión en el archivo **`package.json`**.
 
 6. Seguimos añadiendo parámetros al llamado de `kaplay` en
- **main.js**:
+ **`main.js`**:
  ```js
 kaplay({
   width: 1920,
@@ -145,9 +145,9 @@ kaplay({
 >```
 >* De preferencia el primero(`pnpm`) pero en caso que falle, 
 >seguir usando el segundo(`npm`).
->2. Añadimos al **package.json**, el contenido de:  
+>2. Añadimos al **`package.json`**, el contenido de:  
 >`"eslintConfig": { "extends" : "standard" },`, encima de
->`devDependencies`, quedando el **package.json** así:
+>`devDependencies`, quedando el **`package.json`** así:
 >```json
 >{
 >  "name": "sonic-runner-game",
@@ -172,7 +172,7 @@ kaplay({
 >  }
 >}
 >```
->3. Creo el archivo **.eslintrc.json** 
+>3. Creo el archivo **`.eslintrc.json`** 
 >(OJO: El archivo empieza con el punto) y ponemos este texto:
 >```json
 > {
@@ -206,8 +206,59 @@ kaplay({
 >6. El Formato en `Visual Studio Code` se invoca con las teclas :  
 >[`Alt`] + [`Shift`] + [`F`] 
 > * Este proceso aplicó un nuevo formato a todos los archivos
-> ***.js**
+> **`*.js`**
 
 >[!WARNING]
 >### El archivo **`package-lock.json`**, aparece, pero no es necesario, por ende lo borramos.
 
+## 03. Usando **`kaplayCtx.js`**
+1. Creamos el archivo **`kaplayCtx.js`** en la carpeta "src".
+2. Cortamos lo hecho en **`main.js`** y lo pasamos a 
+**`kaplayCtx.js`**.
+3. Asignamos el valor de `kaplay()` a una una `const` de nombre
+`k`:
+```js
+import kaplay from 'kaplay';
+
+const k = kaplay({
+  width: 1920,
+  height: 1080,
+  letterbox: true, // Para mantener el aspecto de relación
+  background: [0, 0, 0], // Es el color negro
+});
+```
+4. Añadimos mas parámetors a la función `kaplay()`:
+```js
+  global: false, //
+```
+5. Exportamos la `const k`
+```js 
+export default k;
+```
+6. En el archivo **`main.js`**, importamos este valor:
+```js
+import {k} from './kaplayCtx.js';
+```
+7. En **`kaplayCtx.jx`** para `kaplay()` añadimos otro parámetro
+para tener en cuenta con los móbiles:
+```js
+  touchToMouse: true, // Acceso a los móbiles
+```
+8. Especificamos los botones en `kaplay()`:
+```js
+  buttons: {
+    jump: {
+      keyboard: ['space'],
+      mouse: 'left',
+    },
+  },
+``` 
+9. Mas opciones en `kaplay()` de **`kaplayCtx.jx`** para
+depuración:
+```js
+  debugKey: 'd', // la tecla `d` ae usará para hacer depuración
+  debug: true, // Depuración siempre activa
+```
+10. Regreansando al browser donde se ejecuta esta página 
+[localhost:5173](`http://localhost:5173/`), presionamos la tecla
+[`d`] y nos parece un texto en pantalla: `FPS: 60`, o algo parecido.
