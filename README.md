@@ -262,3 +262,57 @@ depuración:
 10. Regreansando al browser donde se ejecuta esta página 
 [localhost:5173](`http://localhost:5173/`), presionamos la tecla
 [`d`] y nos parece un texto en pantalla: `FPS: 60`, o algo parecido.
+
+## 04. Importamos los `assets` de "`public`"
+
+1. En el archivo **`main.js`**, importamos los `assets`, empezando
+por el fondo y la plataforma:
+```js
+k.loadSprite('chemicak-bg', 'gaphics/chemical-bg.png');
+k.loadSprite('platforms', 'gaphics/platforms.png');
+```
+2. Importamos el `sprite` de `'sonic'`, pero este es una imagen con
+múltiples imágenes, entonces se agregan unos parámetros:
+```js
+k.loadSprite('sonic', 'gaphics/sonic.png', {
+  sliceX: 8,
+  sliceY: 2,
+  anims: {
+    run: { from: 0, to: 7, loop: true, speed: 30 },
+    jump: { from: 5, to: 15, loop: true, speed: 100 },
+  },
+});
+```
+3. Lo mismo con `'motobug'`:
+```js
+k.loadSprite('motobug', 'gaphics/motobug.png', {
+  sliceX: 5,
+  sliceY: 1,
+  anims: {
+    run: { from: 0, to: 4, loop: true, speed: 8 },
+  },
+});
+```
+5. Agregamos el `'ring'` en **`main.js`**:
+```js
+k.loadSprite('ring', 'gaphics/ring.png', {
+  sliceX: 16,
+  sliceY: 1,
+  anims: {
+    spin: { from: 0, to: 15, loop: true, speed: 30 },
+  },
+});
+```
+6. Agregamos el tipo de letra o `font`:
+```js
+k.loadFont('mania', 'fonts/mania.ttf');
+```
+7. Agregamos los sonidos en **`main.js`**:
+```js
+k.loadSound('destroy', 'sounds/Destroy.wav');
+k.loadSound('hurt', 'sounds/Hurt.wav');
+k.loadSound('hyper-ring', 'sounds/HyperRing.wav');
+k.loadSound('jump', 'sounds/Jump.wav');
+k.loadSound('ring', 'sounds/Ring.wav');
+k.loadSound('city', 'sounds/city.mp3');
+```
