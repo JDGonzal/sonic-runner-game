@@ -52,8 +52,8 @@ npm create vite@latest .
 * **`counter.js`** 
 * **`main.js`** 
 * **`style.css`**
-3. Creamos la carpeta "src" en la raíz del proyecto.
-4. Creamos el archivo **`main.js`** dentro de "src".
+3. Creamos la carpeta "`src`" en la raíz del proyecto.
+4. Creamos el archivo **`main.js`** dentro de "`src`".
 5. Cambiamos en **`index.html`** la ruta del `<script` a
 `src="src/main.js"`.
 6. Para probar ejecutamos estos dos comandos en la `TERMINAL`:
@@ -67,7 +67,7 @@ npm create vite@latest .
 
 1. Descargamos los `assets` de este sitio: 
 [`public`](https://github.com/JSLegendDev/sonic-runner/tree/master/public) y los copiamos en la misma
-carpeta "public"
+carpeta "`public`"
 2. En una `TERMINAL` de `VSCode` ejecutamos el comando para instalar `kaplay`:
 ```bash
 pnpm i kaplay
@@ -75,7 +75,7 @@ pnpm i kaplay
 3. En el archivo **`main.js`**, poner la importación de `kaplay`
 e inicializar el `canvas` de `kaplay`:
 ```js
-import kaplay from "kaplay";
+import kaplay from 'kaplay';
 kaplay();
 ```
 4. Sino esta en ejecución , en una `TERMINAL`, este comando 
@@ -212,7 +212,7 @@ kaplay({
 >### El archivo **`package-lock.json`**, aparece, pero no es necesario, por ende lo borramos.
 
 ## 03. Usando **`kaplayCtx.js`**
-1. Creamos el archivo **`kaplayCtx.js`** en la carpeta "src".
+1. Creamos el archivo **`kaplayCtx.js`** en la carpeta "`src`".
 2. Cortamos lo hecho en **`main.js`** y lo pasamos a 
 **`kaplayCtx.js`**.
 3. Asignamos el valor de `kaplay()` a una una `const` de nombre
@@ -316,3 +316,32 @@ k.loadSound('jump', 'sounds/Jump.wav');
 k.loadSound('ring', 'sounds/Ring.wav');
 k.loadSound('city', 'sounds/city.mp3');
 ```
+
+## 05. Creando las escenas básicas
+
+1. Creamos un folder dentro de "`src`" llamado "`scenes`".
+2. Ponemos en **`main.js`**, el llamado a tres escenas y cual sería
+la primer escena a mostrar:
+```js
+k.scene('main-menu', () => {});
+k.scene('game', () => {});
+k.scene('gameover', () => {});
+k.go('main-menu');
+```
+3. En la carpeta "`src/scenes`" creamos el archivo **`mainMenu.js`**.
+4. En **`mainMenu.js`**, importamos el contextos de `kaplay`:
+```js
+import k from '../kaplayCtx.js';
+```
+5. Creamos la función `mainMenu` y la exportamos por defecto:
+```js
+export default function mainMenu () {
+
+}
+```
+6. En el archivo **`main.js`**, cambiamos el  
+`k.scene('main-menu', () => {});` por  
+`k.scene('main-menu', mainMenu);`  
+y el debe de importar al principio
+esto:  
+`import mainMenu from './scenes/mainMenu.js';`.
