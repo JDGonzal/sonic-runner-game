@@ -2,11 +2,11 @@ import k from './kaplayCtx.js';
 import mainMenu from './scenes/mainMenu.js';
 
 // Definimos imágens
-k.loadSprite('chemicak-bg', 'gaphics/chemical-bg.png');
-k.loadSprite('platforms', 'gaphics/platforms.png');
+k.loadSprite('chemical-bg', 'graphics/chemical-bg.png');
+k.loadSprite('platforms', 'graphics/platforms.png');
 
 // Definimos `sprites`
-k.loadSprite('sonic', 'gaphics/sonic.png', {
+k.loadSprite('sonic', 'graphics/sonic.png', {
   sliceX: 8,
   sliceY: 2,
   anims: {
@@ -15,7 +15,7 @@ k.loadSprite('sonic', 'gaphics/sonic.png', {
   },
 });
 
-k.loadSprite('ring', 'gaphics/ring.png', {
+k.loadSprite('ring', 'graphics/ring.png', {
   sliceX: 16,
   sliceY: 1,
   anims: {
@@ -23,7 +23,7 @@ k.loadSprite('ring', 'gaphics/ring.png', {
   },
 });
 
-k.loadSprite('motobug', 'gaphics/motobug.png', {
+k.loadSprite('motobug', 'graphics/motobug.png', {
   sliceX: 5,
   sliceY: 1,
   anims: {
