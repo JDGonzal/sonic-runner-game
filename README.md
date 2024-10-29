@@ -345,3 +345,66 @@ export default function mainMenu () {
 y el debe de importar al principio
 esto:  
 `import mainMenu from './scenes/mainMenu.js';`.
+
+## 06. Código Inicial en **`mainMenu.js`**
+
+1. Voy a utilizar el `localStorage`, empiezo con una pregunta en
+negativo para saber si la Data no existe, para crearla:
+```js
+  if (!k.getData('best-score')) k.setData('best-score', 0);
+```
+2. En el archivo el archivo **`mainMenu.js`**, pregunto por la tecla 
+de `'jump'`, para llevarlo o cambiar al escenario `'game'`:
+```js
+  k.onButtonPress('jump', () => k.go('game'));
+```
+3. Creamos una constante de nombre `bgPieceWidth`, para saber cuando
+debo cambiar la primera pieza del fondo, para q funcione el 
+movimiento infinito de `scroll`, juntando dos imágenes, con valor
+del ancho total del ancho definido en `kaplay`, es 1920.
+ 
+>[!CAUTION]  
+>### Corrijo de **`main.js`**, la ruta de las imágenes.
+>### Corrijo también `'chemicak-bg'` por `'chemical-bg'`.
+
+4. En el archivo **`mainMenu.js`** creamos la constante `bgPieces`, 
+es un arreglo para almacenar dos valores de objetos del juego usando 
+el método `k.add()`, añado componente como el `k.sprite` pasando una 
+clave de las definidas en **`main.js`**. 
+Otro componente sería `k.pos()`, especificando las coordenadas (x,y).
+```js
+  const bgPieces = [k.add([k.sprite('chemical-bg'), k.pos(0, 0)])];
+```
+
+>[!NOTE]  
+>Hasta aquí, en el browser ya parece el fondo de pantalla del juego:  
+>![chemicak-bg](images/2024-10-29_151455.png "chemicak-bg, mainMenu.js")
+
+5. Añado mas información a la constante `bgPieces`:
+```js
+  const bgPieces = [k.add([
+    k.sprite('chemical-bg'),
+    k.pos(0, 0),
+    k.scale(2),
+    k.opacity(0.8),
+  ])];
+```
+6. Duplico la información dentro de la constante `bgPieces`, 
+y corrijo la posición `x` del segundo por la constante 
+`bgPieceWidth` multiplicada por `2`:
+```js
+  const bgPieces = [
+    k.add([
+      k.sprite('chemical-bg'),
+      k.pos(0, 0),
+      k.scale(2),
+      k.opacity(0.8),
+    ]),
+    k.add([
+      k.sprite('chemical-bg'),
+      k.pos(bgPieceWidth *2, 0), // Se multiplica x 2 por la `scale`
+      k.scale(2),
+      k.opacity(0.8),
+    ]),
+  ];
+```
