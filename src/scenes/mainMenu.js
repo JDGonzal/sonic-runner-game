@@ -1,3 +1,4 @@
+import { makeSonic } from '../entities/sonic.js';
 import k from '../kaplayCtx.js';
 
 export default function mainMenu () {
@@ -37,6 +38,9 @@ export default function mainMenu () {
       k.scale(4),
     ]),
   ];
+
+  // Llamamos de **`sonic.js`** el método `makeSonic()`
+  makeSonic(k.vec2(200, 745));
 
   // Uso la función `onUpdate` refresca 60 veces por segundo
   k.onUpdate(() => {
