@@ -268,7 +268,7 @@ depuración:
 1. En el archivo **`main.js`**, importamos los `assets`, empezando
 por el fondo y la plataforma:
 ```js
-k.loadSprite('chemicak-bg', 'gaphics/chemical-bg.png');
+k.loadSprite('chemical-bg', 'gaphics/chemical-bg.png');
 k.loadSprite('platforms', 'gaphics/platforms.png');
 ```
 2. Importamos el `sprite` de `'sonic'`, pero este es una imagen con
@@ -378,7 +378,7 @@ Otro componente sería `k.pos()`, especificando las coordenadas (x,y).
 
 >[!NOTE]  
 >Hasta aquí, en el browser ya parece el fondo de pantalla del juego:  
->![chemicak-bg](images/2024-10-29_151455.png "chemicak-bg, mainMenu.js")
+>![chemical-bg](images/2024-10-29_151455.png "chemical-bg, mainMenu.js")
 
 5. Añado mas información a la constante `bgPieces`:
 ```js
@@ -408,3 +408,98 @@ y corrijo la posición `x` del segundo por la constante
     ]),
   ];
 ```
+
+## 07. Movimiento de `'chemical-bg'` y `'platforms'`
+
+1. Creamos una variable con el ancho de la imagen de `platform` :  
+`const platformWidth = 1280;`
+2. Creamos la constante `platforms` en **`mainMenu.js`**, similar
+al de `bgPieces`, pero con otro nombre clave:
+```js
+  const platforms = [
+    k.add([
+      k.sprite('platforms'),
+      k.pos(0, 450),
+      k.scale(4),
+    ]),
+    k.add([
+      k.sprite('platforms'),
+      k.pos(platformWidth * 4, 450), // Multiplicar x 4 (`scale`)
+      k.scale(4),
+    ]),
+  ];
+```
+
+>[!NOTE]  
+>Así se ve el juego en el browser:  
+>![chemical-bg & platform](images/2024-10-29_160900.png "chemical-bg, platform, & mainMenu.js")
+
+3. Usamos la función de `onUpdate`, para los movimientos en pantalla,
+aprovechando que se refresca 60 veces por segundo:
+```js
+  k.onUpdate(() => {
+    // Esto significa q está al finalizar de la imagen 2
+    if (bgPieces[1].pos.x < 0) {
+      // Cambiamos de posición
+      bgPieces[0].moveTo(bgPieces[1].pos.x + bgPieceWidth * 2, 0);
+      // Lo movemos simplemente
+      bgPieces.push(bgPieces.shift());
+    }
+    // Movemos la velocidad a la izquierda, es decir en negativo
+    bgPieces[0].move(-100, 0);
+    // Cambiamos entre los valores de lo que hay en `bgPieces`
+    bgPieces[1].moveTo(bgPieces[0].pos.x + bgPieceWidth * 2, 0);
+  });
+```
+
+>[!NOTE]  
+>Así se ve el juego en el browser, ya en movimiento:  
+>![chemical-bg movimiento](images/202410291816-chemical-bg3.gif "chemical-bg en movimiento")
+
+4. Agrego el parámetro `k.area()` a la lista de elementos de la
+constante `bgPieces` en **`MainMenu.js`**:
+```js
+  const bgPieces = [
+    k.add([
+      k.sprite('chemical-bg'),
+      k.pos(0, 0),
+      k.scale(2),
+      k.opacity(0.8),
+      k.area(),
+    ]),
+    k.add([
+      k.sprite('chemical-bg'),
+      k.pos(bgPieceWidth * 2, 0), // Se multiplica x 2 por la `scale`
+      k.scale(2),
+      k.opacity(0.8),
+      k.area(),
+    ]),
+  ];
+```
+
+>[!NOTE]  
+> Si presiono la tecla [`d`] en medio del juego, aparece un dato
+>en pantalla de la posición recorrida por la imagen del `sprite` de
+>nombre `'chemical-bg'`:  
+>![chemical-bg movimiento debug](images/202410301546-chemical-bg-debug3.gif "Debug de chemical-bg en movimiento")
+
+5. Removemos los componentes de nombre `k.area()`, pues no los 
+necesitamos, pero se pueden activar para hacer un `debug`.
+6. Añadimos algo similar para `platforms`, dentro del `k.onUpdate()`:
+```js
+    // Esto significa q está al finalizar de la imagen 2
+    if (platforms[1].pos.x < 0) {
+      // Cambiamos de posición
+      platforms[0].moveTo(platforms[1].pos.x + platformWidth * 4, 450);
+      // Lo movemos simplemente
+      platforms.push(platforms.shift());
+    }
+    // Movemos la velocidad a la izquierda, es decir en negativo
+    platforms[0].move(-4000, 0);
+    // Cambiamos entre los valores de lo que hay en `platforms`
+    platforms[1].moveTo(platforms[0].pos.x + platformWidth * 4, 450);
+```
+
+>[!NOTE]  
+>Así se ve el juego en el browser, ya en movimientode ambos:  
+>![chemical-bg & platforms movimiento](images/202410301618-chemical-bg_platforms3.gif "chemical-bg y platforms en movimiento")
