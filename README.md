@@ -503,3 +503,41 @@ necesitamos, pero se pueden activar para hacer un `debug`.
 >[!NOTE]  
 >Así se ve el juego en el browser, ya en movimientode ambos:  
 >![chemical-bg & platforms movimiento](images/202410301618-chemical-bg_platforms3.gif "chemical-bg y platforms en movimiento")
+
+## 08. Creando el objeto `Sonic`
+1. Creamos en la carpeta "`scr`" el folder de nombre "`entities`".
+2. Creamos dentro de "`src/entities`" el archivo de nombre
+**`sonic.js`**.
+3. Creamos una función de nombre `makeSonic`, la cual la exportamos
+y va a contener un parámetro:
+```js
+export function makeSonic (pos) {
+
+}
+```
+4. Añadimos la importación del contexto de `Kaplay` en 
+**`sonic.js`**:
+```js
+import k from '../kaplayCtx.js';
+```
+5. Creamos dentro de la función `makeSonic` la constante `sonic`:
+```js
+export function makeSonic (pos) {
+  const sonic = k.add([
+    k.sprite('sonic', { anim: 'run' }),
+    k.scale(4),
+    k.area(),
+    k.anchor('center'),
+    k.pos(pos),
+  ]);
+}
+```
+6. Llamamos la función `makeSonic()` en **`mainMenu.js`**, justo
+antes del `k.onUpdate()`. El debe de importar esto :  
+`import { makeSonic } from '../entities/sonic.js';`
+```js
+  makeSonic(k.vec2(200, 745));
+```
+>[!NOTE]  
+>Automáticamente aparece la imagen de `sonic`, corriendo sobre las 
+>`plataforms`.
