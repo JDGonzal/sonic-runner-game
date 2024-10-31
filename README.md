@@ -541,3 +541,51 @@ antes del `k.onUpdate()`. El debe de importar esto :
 >[!NOTE]  
 >Automáticamente aparece la imagen de `sonic`, corriendo sobre las 
 >`plataforms`.
+
+## 09. Texto del Menú
+
+1. Vamos a agregar un texto, justo antes de llamar el método
+`makeSonic()` en **`mainMenu.js`**:
+```js
+  k.add([
+    k.text('SONIC RING RUN', { font: 'mania', size: 96 }),
+    k.pos(k.center()), // Aqui aparece del centro a la derecha
+  ]);
+```
+>[!TIP]  
+>Hasta aquí el texto aparece del centro a la derecha:  
+>![Sonic Ring Run](images/2024-10-31_101032.png)
+
+2. Agregamos un `k.anchor()` al texto en el **`mainMenu.js`**,
+y ahí si aparece en el centro, centro:
+```js
+  k.add([
+    k.text('SONIC RING RUN', { font: 'mania', size: 96 }),
+    k.pos(k.center()), // Aqui aparece del centro a la derecha
+    k.anchor('center'), // Aqui lo organiza en el centro, centro
+  ])
+```
+3. Ajuste final del texto para que aparezca a 200 del tope y en el
+centro desde la izquierda:
+```js
+  k.add([
+    k.text('SONIC RING RUN', { font: 'mania', size: 96 }),
+    // k.pos(k.center()), // Aqui aparece del centro a la derecha
+    k.pos(k.center().x, 200), // Aqui centro de `x` y a 200 en `y`
+    k.anchor('center'), // Aqui lo organiza en el centro, centro
+  ]);
+```
+4. Agregamos el texto que indique el accionar para pasar a la
+escena siguiente:
+```js
+  k.add([
+    k.text('Press Space/Click/Touch to Play',
+      { font: 'mania', size: 32 }),
+    k.pos(k.center().x, k.center().y - 200), // A
+    k.anchor('center'), // Aqui lo organiza en el centro, centro
+  ]);
+```
+
+>[!IMPORTANT]  
+>Este es el resultado esperado del juego en el browser:  
+>![Sonic Ring Run](images/2024-10-31_103413.png)

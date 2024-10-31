@@ -8,4 +8,5 @@ export function makeSonic (pos) {
     k.anchor('center'),
     k.pos(pos),
   ]);
+  console.log(sonic);
 }
