@@ -39,6 +39,21 @@ export default function mainMenu () {
     ]),
   ];
 
+  // Agregamos un texto
+  k.add([
+    k.text('SONIC RING RUN', { font: 'mania', size: 96 }),
+    // k.pos(k.center()), // Aqui aparece del centro a la derecha
+    k.pos(k.center().x, 200), // Aqui centro de `x` y a 200 en `y`
+    k.anchor('center'), // Aqui lo organiza en el centro, centro
+  ]);
+
+  k.add([
+    k.text('Press Space/Click/Touch to Play',
+      { font: 'mania', size: 32 }),
+    k.pos(k.center().x, k.center().y - 200), // A
+    k.anchor('center'), // Aqui lo organiza en el centro, centro
+  ]);
+
   // Llamamos de **`sonic.js`** el método `makeSonic()`
   makeSonic(k.vec2(200, 745));
 
