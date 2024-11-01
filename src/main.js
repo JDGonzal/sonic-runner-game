@@ -1,4 +1,5 @@
 import k from './kaplayCtx.js';
+import game from './scenes/game.js';
 import mainMenu from './scenes/mainMenu.js';
 
 // Definimos imágens
@@ -44,6 +45,6 @@ k.loadSound('city', 'sounds/city.mp3');
 
 // Llamamos tres escenas y con cual va a empezar:
 k.scene('main-menu', mainMenu);
-k.scene('game', () => {});
+k.scene('game', game);
 k.scene('gameover', () => {});
 k.go('main-menu');

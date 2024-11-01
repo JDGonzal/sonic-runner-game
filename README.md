@@ -501,7 +501,7 @@ necesitamos, pero se pueden activar para hacer un `debug`.
 ```
 
 >[!NOTE]  
->Así se ve el juego en el browser, ya en movimientode ambos:  
+>Así se ve el juego en el browser, ya en movimiento de ambos:  
 >![chemical-bg & platforms movimiento](images/202410301618-chemical-bg_platforms3.gif "chemical-bg y platforms en movimiento")
 
 ## 08. Creando el objeto `Sonic`
@@ -589,3 +589,100 @@ escena siguiente:
 >[!IMPORTANT]  
 >Este es el resultado esperado del juego en el browser:  
 >![Sonic Ring Run](images/2024-10-31_103413.png)
+
+## 10. Empezando la escena **`game.js`**
+1. Creamos en "`src/scenes`" el archivo **`game.js`**.
+2. También en el mismo folder el archivo **`gameover.js`**.
+3. en ambos archivo añadimos la importación del contexto de `kaplay`:  
+`import k from '../kaplayCtx.js';`
+4. Empezando en **`game.js`**, creamos el método `game()` y lo
+exportamos por defecto:
+```js
+export default function game () {}
+```
+5. En el archivo **`game.js`**, definimos la gravedad o caída de los
+objetos:
+```js
+export default function game () {
+  // Definimos la gravedad o caída d elos objetos
+  k.setGravity(3100);
+}
+```
+6. Copiamos de **`mainMenu.js`**, los datos de `bgPieces` y 
+`platforms`, debajo de la definición de gravedad:
+```js
+  // Copiamos de **`MainMenu.js`**
+  const bgPieceWidth = 1920;
+  const bgPieces = [
+    k.add([
+      k.sprite('chemical-bg'),
+      k.pos(0, 0),
+      k.scale(2),
+      k.opacity(0.8),
+    ]),
+    k.add([
+      k.sprite('chemical-bg'),
+      k.pos(bgPieceWidth * 2, 0), // Se multiplica x 2 por la `scale`
+      k.scale(2),
+      k.opacity(0.8),
+    ]),
+  ];
+
+  const platformWidth = 1280;
+  const platforms = [
+    k.add([
+      k.sprite('platforms'),
+      k.pos(0, 450),
+      k.scale(4),
+    ]),
+    k.add([
+      k.sprite('platforms'),
+      k.pos(platformWidth * 4, 450), // Multiplicar x 4 (`scale`)
+      k.scale(4),
+    ]),
+  ];
+```
+7. Añadimos en **`game.js`**, una variable para el manejo de la
+velocidad de nombre `gameSpeed` con valor inicial de:`300`.
+8. Uso la función `k.loop()` que es un ciclo que se mueve en el 
+tiempo, en este caso el valor es `1`, sería cada segundo:
+```js
+  k.loop(1, () => {
+    gameSpeed += 50;
+  });
+```
+9. Añadimos en **`game.js`**, la función `onUpdate()`, para refrescar
+60 veces por segundo:
+```js
+k.onUpdate(() => {});
+```
+10. Copiamos la lógica del `bgPieces` de **`mainMenu.js`**:
+```js
+    if (bgPieces[1].pos.x < 0) {
+      bgPieces[0].moveTo(bgPieces[1].pos.x + bgPieceWidth * 2, 0);
+      bgPieces.push(bgPieces.shift());
+    }
+    bgPieces[0].move(-100, 0);
+    bgPieces[1].moveTo(bgPieces[0].pos.x + bgPieceWidth * 2, 0);
+```
+11. Copiamos la lógica del `platforms` de **`mainMenu.js`**,
+con algunos cambios como el uso de `gamespeed`:
+```js
+  if (platforms[1].pos.x < 0) {
+    platforms[0].moveTo(platforms[1].pos.x + platformWidth * 4, 450);
+    platforms.push(platforms.shift());
+  }
+  platforms[0].move(-gameSpeed, 0);
+  platforms[1].moveTo(platforms[0].pos.x + platformWidth * 4, 450);
+```
+12. En el archivo **`main.js`**, en la función de la escena de 
+nombre `'game'`, hacemos el llamado de el método `game()`,
+tener presente q se importa `import game from './scenes/game.js';`:
+```js
+k.scene('game', game);
+```
+
+>[!NOTE]  
+>Al dar click o enter en la imagen inicial, pasa a la escena `game`,
+>similar a esta:  
+>![](images/2024-11-01_152207.png)
