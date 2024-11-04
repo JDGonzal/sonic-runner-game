@@ -1,4 +1,5 @@
 import k from '../kaplayCtx.js';
+import { makeSonic } from '../entities/sonic.js';
 
 export default function game () {
   // Definimos la gravedad o caída d elos objetos
@@ -35,12 +36,26 @@ export default function game () {
     ]),
   ];
 
+  // Añadimos el objeto `sonic` al juego:
+  const sonic = makeSonic(k.vec2(200, 745));
+
   // Velociad del juego con valor inicial de 300
   let gameSpeed = 300;
   // Ciclo que se mueve cada segundo
   k.loop(1, () => {
     gameSpeed += 50;
   });
+
+  // Agregamos una plataforma invisible
+  k.add([
+    k.rect(1920, 300),
+    k.opacity(0), // Es invisible
+    k.area(), // Se requiere para ver en el debug
+    k.pos(0, 832),
+    k.body({ // Para los factores de gravedad
+      isStatic: true,
+    }),
+  ]);
 
   // Uso la función `onUpdate` refresca 60 veces por segundo
   k.onUpdate(() => {
