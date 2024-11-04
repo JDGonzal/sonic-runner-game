@@ -7,6 +7,23 @@ export function makeSonic (pos) {
     k.area(),
     k.anchor('center'),
     k.pos(pos),
+    k.body({ jumpForce: 1700 }),
+    {
+      setControls () {
+        k.onButtonPress('jump', () => {
+          if (this.isGrounded()) {
+            this.play('jump'); // Esta es la animación
+            this.jump();
+            k.play('jump', { volume: 0.5 }); // Ejecuto el sonido
+          }
+        });
+      },
+      setEvents () {
+        this.onGround(() => {
+          this.play('run'); // Esta es la animación
+        });
+      },
+    },
   ]);
-  console.log(sonic);
+  return sonic;
 }

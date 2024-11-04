@@ -713,3 +713,54 @@ k.scene('game', game);
 * Recuerde importar la entidad que contiene la
 función `makeSonic()`:  
 `import { makeSonic } from '../entities/sonic.js';`
+
+## 12. Implementando `sonic` en el juego
+
+1. En el archivo **`sonic.js`**, agregamos propiedades
+personalizadas como `setControls`:
+```js
+    {
+      setControls () {
+        k.onButtonPress('jump', () => {
+          if (this.isGrounded()) {
+            this.play('jump');
+            this.jump();
+          }
+        });
+      },
+    },
+```
+2. En el método `makeSonic()`, añadimos mas componentes
+como es `body()` justo debajo de `k.pos()`:
+```js
+    k.body({ jumpForce: 1700 }),
+```
+3. En el `setControls ()` añado un `k.play('jump')`,
+para que aparezca el sonido del salto:
+```js
+        k.play('jump', { volume: 0.5 });
+```
+4. Añado al nivel de `setControls ()` otro de nombre
+`setEvents ()`:
+```js
+      setEvents () {
+        this.onGround(() => {
+          this.play('run'); // Esta es la animación
+        });
+      },
+```
+5. Regreso a **`game.js`**, justo debajo de la creación
+del objeto `sonic`, va esto:
+```js
+  sonic.setControls(); // Llamo el control del salto
+  sonic.setEvents(); // Para la carrera
+```
+6. En el archivo **`sonic.js`** debo retornar el valor
+de la constante `sonic` en el método `makeSonic ()`.
+7. Para que el fondo se mueva verticalmente cuando 
+`sonic` hace el `jump`, implementar esto en 
+**`game.js`**:
+```js
+    bgPieces[0].moveTo(bgPieces[0].pos.x, -sonic.pos.y / 10 - 50);
+    bgPieces[1].moveTo(bgPieces[1].pos.x, -sonic.pos.y / 10 - 50);
+```

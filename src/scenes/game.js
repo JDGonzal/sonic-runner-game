@@ -38,6 +38,8 @@ export default function game () {
 
   // Añadimos el objeto `sonic` al juego:
   const sonic = makeSonic(k.vec2(200, 745));
+  sonic.setControls(); // Llamo el control del salto
+  sonic.setEvents(); // Para la carrera
 
   // Velociad del juego con valor inicial de 300
   let gameSpeed = 300;
@@ -66,6 +68,9 @@ export default function game () {
     }
     bgPieces[0].move(-100, 0);
     bgPieces[1].moveTo(bgPieces[0].pos.x + bgPieceWidth * 2, 0);
+    // Hacer que el fondo se mueva cuando `sonic` hace el `jump`
+    bgPieces[0].moveTo(bgPieces[0].pos.x, -sonic.pos.y / 10 - 50);
+    bgPieces[1].moveTo(bgPieces[1].pos.x, -sonic.pos.y / 10 - 50);
   });
 
   // Copiamos la lógica del `platforms` de **`mainMenu.js`**,
