@@ -686,3 +686,30 @@ k.scene('game', game);
 >Al dar click o enter en la imagen inicial, pasa a la escena `game`,
 >similar a esta:  
 >![](images/2024-11-01_152207.png)
+
+## 11. Sonic sobre una `platform` invisible
+
+1. Empezando en **`game.js`**, agregamos con un 
+`k.add()`, un rectángulo invisible:
+```js
+  k.add([
+    k.rect(1920,300),
+    k.opacity(0), // Es invisible
+    k.area(), // Se requiere para ver en el debug
+    k.pos(0, 832),
+    k.body({ // Para los factores de gravedad
+      isStatic: true,
+    }), 
+  ])
+```
+>[!NOTE]  
+>Al pasar a la escena del `game` y presionar la tecla
+>[`d`], se ve el rectángulo invisible.
+
+2. Añadimos el objeto `sonic` al juego:
+```js
+  const sonic = makeSonic(k.vec2(200, 745));
+```
+* Recuerde importar la entidad que contiene la
+función `makeSonic()`:  
+`import { makeSonic } from '../entities/sonic.js';`
