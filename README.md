@@ -764,3 +764,83 @@ de la constante `sonic` en el método `makeSonic ()`.
     bgPieces[0].moveTo(bgPieces[0].pos.x, -sonic.pos.y / 10 - 50);
     bgPieces[1].moveTo(bgPieces[1].pos.x, -sonic.pos.y / 10 - 50);
 ```
+
+## 13. Mostrando `motobug` en pantalla
+
+1. Creamos el archivo **`motobug.js`** en la carpeta **"src/entities"**.
+2. Copiamos lo mismo de la entidad **`sonic.js`** y le hacemos los
+ajustes respectivos:
+```js
+import k from '../kaplayCtx.js';
+
+export function makeMotobug (pos) {
+  return k.add([
+    k.sprite('motobug', { anim: 'run' }),
+    k.scale(4),
+    k.area({ shape: new k.Rect(k.vec2(-5, 0), 32, 32) }),
+    k.anchor('center'),
+    k.pos(pos),
+    k.offscreen(),
+    'enemy', // Esto es un `TAG`
+  ]);
+}
+```
+3. En el archivo **`game.js`** debajo de `gameSpeed += 50;`
+creamos la constante `spawnMotoBug` como un método:
+```js
+  const spawnMotoBug = () => {
+
+  };
+```
+4. Dentro de este método `spawnMotoBug()` llamamos la función
+`makeMotoBug` asociándola a una constante:
+```js
+    const motobug = makeMotoBug(k.vec2(1920, 773));
+```
+5. Importamos la entidad en **`game.js`**:
+```js
+import { makeMotoBug } from '../entities/motobug.js';
+```
+6. Dentro del método `spawnMotoBug()` llamamos para `motobug`,
+la función `onUpdate()`:
+```js
+    motobug.onUpdate(() => {
+      if (gameSpeed < 3000) {
+        motobug.move(-(gameSpeed + 300), 0);
+        return;
+      }
+    });
+```
+7. En el mismo `onUpdate()` de `spawnMotoBug()` en el archivo
+**`game.js`** ponemos el `move` de `motobug`:
+```js
+      motobug.move(-gameSpeed, 0);
+```
+8. Al `spawnMotoBug()` agregamos otro método de `motobug` y es `onExitScreen()`
+```js
+    motobug.onExitScreen(() => {
+      
+    });
+```
+9. En el método de `onExitScreen()`, Destruimos el `motobug` si la 
+posición es menor a cero:
+```js
+      if (motobug.pos.x < 0) k.destroy(motobug);
+```
+10. En el `spawnMotoBug()` de **`game.js`** definimos un tiempo de 
+espera de manera aleatoria
+```js
+    const waitTime = k.rand(0.5, 2.5);
+    k.wait(waitTime, spawnMotoBug);
+```
+11. Por último y justo donde se cierra el método `spawnMotoBug()`,
+llamamos este mismo método:
+```js
+  spawnMotoBug();
+```
+
+>[!NOTE]  
+>Así es como se ve el juego en el browser.  
+>Ya aparecen los `motobug`, aún sin hacer contacto
+>o ejecutar una acción con el personaje u objeto `sonic`:  
+>![](images/2024-11-07_180341.png)
