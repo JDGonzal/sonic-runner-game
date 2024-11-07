@@ -1,5 +1,6 @@
 import k from '../kaplayCtx.js';
 import { makeSonic } from '../entities/sonic.js';
+import { makeMotoBug } from '../entities/motobug.js';
 
 export default function game () {
   // Definimos la gravedad o caída d elos objetos
@@ -47,6 +48,30 @@ export default function game () {
   k.loop(1, () => {
     gameSpeed += 50;
   });
+
+  // Definimos el objeto `motobug` el `enemy`
+  const spawnMotoBug = () => {
+    const motobug = makeMotoBug(k.vec2(1920, 773));
+    motobug.onUpdate(() => {
+      if (gameSpeed < 3000) {
+        motobug.move(-(gameSpeed + 300), 0);
+        // eslint-disable-next-line no-useless-return
+        return;
+      }
+      // Movimiento constante
+      motobug.move(-gameSpeed, 0);
+    });
+    motobug.onExitScreen(() => {
+      // Destruimos el `motobug` si la posición es menor a cero:
+      if (motobug.pos.x < 0) k.destroy(motobug);
+    });
+
+    // Definimos un tiempo de espera de manera aleatoria
+    const waitTime = k.rand(0.5, 2.5);
+    k.wait(waitTime, spawnMotoBug);
+  };
+  // Simplemente llamamos el método q muestra a `motobug`
+  spawnMotoBug();
 
   // Agregamos una plataforma invisible
   k.add([
