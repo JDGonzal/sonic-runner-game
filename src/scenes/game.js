@@ -42,6 +42,23 @@ export default function game () {
   sonic.setControls(); // Llamo el control del salto
   sonic.setEvents(); // Para la carrera
 
+  sonic.onCollide('enemy', (enemy) => { // Colisión `sonic`, `enemy`
+    if (!sonic.isGrounded()) { // `sonic` no esta en el piso
+      k.play('destroy', { volume: 0.5 }); // Música o sonido
+      k.play('hyper-ring', { volume: 0.5 }); // Música o sonido
+      k.destroy(enemy); // Destruye el objeto
+      sonic.play('jump'); // Suena música del salto
+      sonic.jump(); // Toma un salto extra
+      // TODO: Añadir los puntajes ganados
+      // eslint-disable-next-line no-useless-return
+      return;
+    }
+    // En caso de estar en el piso hace esto:
+    k.play('hurt', { volume: 0.5 }); // Sonido de dolor
+    // TODO: Esto mismo con el puntaje
+    k.go('gameover'); // Se va a la escena final
+  });
+
   // Velociad del juego con valor inicial de 300
   let gameSpeed = 300;
   // Ciclo que se mueve cada segundo

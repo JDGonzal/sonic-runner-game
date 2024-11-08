@@ -844,3 +844,38 @@ llamamos este mismo método:
 >Ya aparecen los `motobug`, aún sin hacer contacto
 >o ejecutar una acción con el personaje u objeto `sonic`:  
 >![](images/2024-11-07_180341.png)
+
+## 14. Definiendo colisión `sonic` y `motobug` o `enemy`
+
+1. en el archivo **`game.js`**, justo debajo de `sonic.setEvents();`
+invocamos una función de nombre `sonic.onCollide();`, con parámetros:
+```js
+  sonic.onCollide('enemy', () => {
+
+  });
+```
+2. Añadimos a la función de `sonic.onCollide()` la condición cuando
+`sonic` no está en el piso:
+```js
+  sonic.onCollide('enemy', (enemy) => { // Colisión `sonic`,`enemy`
+    if (!sonic.isGrounded()) { // `sonic` no esta en el piso
+      k.play('destroy', { volume: 0.5 }); // Música o sonido
+      k.play('hyper-ring', { volume: 0.5 }); // Música o sonido
+      k.destroy(enemy); // Destruye el objeto
+      sonic.play('jump'); // Suena música del salto
+      sonic.jump(); // Toma un salto extra
+      // TODO: Añadir los puntajes ganados
+      return;
+    }
+  });
+```
+3. En caso de estar en el piso hace esto:
+```js
+    k.play('hurt', { volume: 0.5 }); // Sonido de dolor
+    // TODO: Esto mismo con el puntaje
+    k.go('gameover'); // Se va a la escena final
+```
+
+>[!NOTE]  
+> Ya `sonic` salta y destruye los `enemy` o `motobug`, pero si es 
+>alcanzado el juego termina y se va a una escena pendiente por hacer.
