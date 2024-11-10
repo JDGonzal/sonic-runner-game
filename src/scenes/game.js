@@ -38,6 +38,15 @@ export default function game () {
     ]),
   ];
 
+  // Variable para devinir los puntajes o `score`
+  let score = 0;
+  let scoreMultiplier = 0;
+
+  const scoreText = k.add([
+    k.text('SCORE : 0', { font: 'mania', size: 72 }),
+    k.pos(20, 20),
+  ]);
+
   // Añadimos el objeto `sonic` al juego:
   const sonic = makeSonic(k.vec2(200, 745));
   sonic.setControls(); // Llamo el control del salto
@@ -50,7 +59,10 @@ export default function game () {
       k.destroy(enemy); // Destruye el objeto
       sonic.play('jump'); // Suena música del salto
       sonic.jump(); // Toma un salto extra
-      // TODO: Añadir los puntajes ganados
+      scoreMultiplier += 1;
+      score += 10 * scoreMultiplier;
+      scoreText.text = `SCORE : ${score}`;
+
       // eslint-disable-next-line no-useless-return
       return;
     }
@@ -58,6 +70,14 @@ export default function game () {
     k.play('hurt', { volume: 0.5 }); // Sonido de dolor
     // TODO: Esto mismo con el puntaje
     k.go('gameover'); // Se va a la escena final
+  });
+
+  sonic.onCollide('ring', (ring) => { // Colisión `sonic`, `ring`
+    k.play('ring', { volume: 0.5 }); // Música o sonido
+    k.destroy(ring); // destruye el objeto
+
+    score++;
+    scoreText.text = `SCORE : ${score}`;
   });
 
   // Velociad del juego con valor inicial de 300
@@ -123,6 +143,9 @@ export default function game () {
 
   // Uso la función `onUpdate` refresca 60 veces por segundo
   k.onUpdate(() => {
+    // Si `sonic` está en el piso se reinicia `scoreMultiplier`
+    if (sonic.isGrounded()) scoreMultiplier = 0;
+
     // Copiamos la lógica del `bgPieces` de **`mainMenu.js`**:
     if (bgPieces[1].pos.x < 0) {
       bgPieces[0].moveTo(bgPieces[1].pos.x + bgPieceWidth * 2, 0);

@@ -925,3 +925,55 @@ de **`game.js`**, con algunos cambios:
 >Ya en el juego aparecen tanto los `motobug` como los `ring`:  
 >![](images/2024-11-10_170625.png)  
 >Los `ring` aún no colisionan con `sonic`.
+
+4. En el archivo **`game.js`** debajo del método 
+`sonic.onCollide('enemy')`, añadimos una nueva colisión para `sonic`:
+```js
+  sonic.onCollide('ring', (ring) => { // Colisión `sonic`, `ring`
+    k.play('ring', { volume: 0.5 }); // Música o sonido
+    k.destroy(ring); // destruye el objeto
+    // TODO: Añadir los puntajes ganados
+  });
+```
+
+## 16. Empezando los puntajes o el `score`
+
+1. Creamos una variable antes de crear a `sonic` en el archivo
+**`game.js`**, de nombre `score`, inicializada en `0`.
+2. Otra variable de nombre `scoreMultiplier` en `0`.
+3. Justo después de `k.destroy(ring);`, incrementamos la variable
+`score`.
+4. debajo de la creación de la variable `scoreMultiplier`, añadimos
+la constante `scoreText`, como un objeto:
+```js
+  const scoreText = k.add([
+    k.text('SCORE : 0', { font: 'mania', size: 72 }),
+    k.pos(20, 20),
+  ]);
+```
+>[!NOTE]  
+>Así se ve ya el browser del juego con este `score`:  
+>![](images/2024-11-10_173742.png)
+
+5. Después de incrementar el `score` en `sonic.onCollide('ring')`
+cambiamos el `scoreText`:
+```js
+    scoreText.text = `SCORE : ${score}`;
+```
+>[!NOTE]  
+>Así se ve cuando acumula puntajes:  
+>![](images/2024-11-10_174509.png)
+
+6. Dentro de `sonic.onCollide('enemy')`, en el `//TODO` primero
+lo reemplazamos por este código:
+```js
+      scoreMultiplier += 1;
+      score += 10 * scoreMultiplier;
+      scoreText.text = `SCORE : ${score}`;
+```
+7. En el método `k.onUpdate()`, de **`game.js`**,
+añadimos una condicional si `sonic`
+está en el suelo, entonces de reinicia el valor de `scoreMultiplier`:
+```js
+    if (sonic.isGrounded()) scoreMultiplier = 0;
+```
