@@ -879,3 +879,49 @@ invocamos una función de nombre `sonic.onCollide();`, con parámetros:
 >[!NOTE]  
 > Ya `sonic` salta y destruye los `enemy` o `motobug`, pero si es 
 >alcanzado el juego termina y se va a una escena pendiente por hacer.
+
+## 15. Empezando por la lógica del `ring`
+
+1. Primero creamos la entidad de nombre **`ring.js`** en la carpeta
+"`src/entities`"".
+2. Copiamos el contenido de **`motobub.js`** y hacemos algunos ajustes:
+```js
+import k from '../kaplayCtx.js';
+
+export function makeRing (pos) {
+  return k.add([
+    k.sprite('ring', { anim: 'spin' }),
+    k.scale(4),
+    k.area(),
+    k.anchor('center'),
+    k.pos(pos),
+    k.offscreen(),
+    'ring', // Esto es un `TAG`
+  ]);
+}
+```
+3. La lógica para el `score` es similar a la del método `spawnMotoBug()`
+de **`game.js`**, con algunos cambios:
+```js
+  const spawnRing = () => {
+    const ring = makeRing(k.vec2(1950, 745));
+    ring.onUpdate(() => {
+      // Movimiento constante
+      ring.move(-gameSpeed, 0);
+      ring.onExitScreen(() => {
+        // Destruimos el `ring` si la posición es menor a cero:
+        if (ring.pos.x < 0) k.destroy(ring);
+      });
+    });
+
+    // Definimos un tiempo de espera de manera aleatoria
+    const waitTime = k.rand(0.5, 3);
+    k.wait(waitTime, spawnRing);
+  };
+  // Simplemente llamamos el método q muestra a `ring`
+  spawnRing();
+```
+>[!NOTE]  
+>Ya en el juego aparecen tanto los `motobug` como los `ring`:  
+>![](images/2024-11-10_170625.png)  
+>Los `ring` aún no colisionan con `sonic`.

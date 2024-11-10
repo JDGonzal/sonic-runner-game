@@ -1,6 +1,7 @@
 import k from '../kaplayCtx.js';
 import { makeSonic } from '../entities/sonic.js';
 import { makeMotoBug } from '../entities/motobug.js';
+import { makeRing } from '../entities/ring.js';
 
 export default function game () {
   // Definimos la gravedad o caída d elos objetos
@@ -77,10 +78,10 @@ export default function game () {
       }
       // Movimiento constante
       motobug.move(-gameSpeed, 0);
-    });
-    motobug.onExitScreen(() => {
-      // Destruimos el `motobug` si la posición es menor a cero:
-      if (motobug.pos.x < 0) k.destroy(motobug);
+      motobug.onExitScreen(() => {
+        // Destruimos el `motobug` si la posición es menor a cero:
+        if (motobug.pos.x < 0) k.destroy(motobug);
+      });
     });
 
     // Definimos un tiempo de espera de manera aleatoria
@@ -89,6 +90,25 @@ export default function game () {
   };
   // Simplemente llamamos el método q muestra a `motobug`
   spawnMotoBug();
+
+  // Definimos el objeto `ring`
+  const spawnRing = () => {
+    const ring = makeRing(k.vec2(1950, 745));
+    ring.onUpdate(() => {
+      // Movimiento constante
+      ring.move(-gameSpeed, 0);
+      ring.onExitScreen(() => {
+        // Destruimos el `ring` si la posición es menor a cero:
+        if (ring.pos.x < 0) k.destroy(ring);
+      });
+    });
+
+    // Definimos un tiempo de espera de manera aleatoria
+    const waitTime = k.rand(0.5, 3);
+    k.wait(waitTime, spawnRing);
+  };
+  // Simplemente llamamos el método q muestra a `ring`
+  spawnRing();
 
   // Agregamos una plataforma invisible
   k.add([
