@@ -1033,4 +1033,113 @@ la escena `'gameover'` en **`game.js`**:
 ```js
     k.go('gameover', { citySfx }); // Se va a la escena final
 ```
-  
+
+## 18. Empezando la escena en el archivo **`gameover.js`**
+
+1. Ya tenemos el archivo **`gameover.js`**, con al menos una línea,
+la importación del contexto de `kaplay`, para luego añadir la
+exportación de la función por defecto, con el mismo nombre:
+```js
+export default function gameover (citySfx) {}
+```
+2. Ponemos una variable y una constante con los valores de los 
+puntajes o `score`:
+```js
+  // Definimos una variable con el tope del puntaje o `score`
+  let bestScore = k.getData('best-score');
+  // Otra con el mas reciente puntaje o `score`
+  const currentScore = k.getData('current-score');
+```
+3. Ponemos unas categorias o _rankings_:
+```js
+  // Ponemos unas categorías o _rankings_
+  const rankGrades = ['F', 'E', 'D', 'C', 'B', 'A', 'S'];
+  const rankValues = [50, 80, 100, 200, 300, 400, 500];
+```
+4. Dos variables mas con el actual y mejor categoría:
+```js
+  let currentRank = 'F';
+  let bestRank = 'F';
+```
+5. En un ciclo cargamos el `currentRank` y `bestRank`:
+```js
+  for (let i = 0; i < rankValues.length; i++) {
+    if (rankValues[i] < currentScore) {
+      currentRank = rankGrades[i];
+    }
+    if (rankValues[i] > bestScore) {
+      bestRank = rankGrades[i];
+    }
+  }
+```
+6. Cambiamos el valor de `'best-score'` si la actual es mayor:
+```js
+  if (bestScore < currentScore) {
+    k.setData('best-score', bestScore);
+    bestScore = currentScore;
+    bestRank = currentRank;
+  }
+```
+7. Agregamos varios textos en pantalla ya como el resultado final:
+```js
+  k.add([
+    k.text('GAME OVER', { font: 'mania', size: 96 }),
+    k.anchor('center'),
+    k.pos(k.center().x, k.center().y - 300),
+  ]);
+  k.add([
+    k.text(`BEST SCORE : ${bestScore}`, { font: 'mania', size: 64 }),
+    k.anchor('center'),
+    k.pos(k.center().x - 400, k.center().y - 200),
+  ]);
+  k.add([
+    k.text(`CURRENT SCORE : ${currentScore}`, { font: 'mania', size: 64 }),
+    k.anchor('center'),
+    k.pos(k.center().x + 400, k.center().y - 200),
+  ]);
+```
+8. Creamos una constante `bestRankBox` en **`gameover.js`**, para
+mostrar `bestRank`:
+```js
+  const bestRankBox = k.add([
+    k.rect(400, 400, { radius: 4 }),
+    k.color(0, 0, 0),
+    k.area(),
+    k.anchor('center'),
+    k.outline(6, k.Color.fromArray([255, 255, 255])),
+    k.pos(k.center().x - 400, k.center().y + 50),
+  ]);
+  bestRankBox.add([
+    k.text(bestRank, { font: 'mania', size: 100 }),
+    k.anchor('center'),
+  ]);
+```
+9. Creamos una constante `currentRankBox` en **`gameover.js`**, para
+mostrar `currentRank`:
+```js
+  const currentRankBox = k.add([
+    k.rect(400, 400, { radius: 4 }),
+    k.color(0, 0, 0),
+    k.area(),
+    k.anchor('center'),
+    k.outline(6, k.Color.fromArray([255, 255, 255])),
+    k.pos(k.center().x - 400, k.center().y + 50),
+  ]);
+  currentRankBox.add([
+    k.text(currentRank, { font: 'mania', size: 100 }),
+    k.anchor('center'),
+  ]);
+}
+```
+10. En el archivo **`main.js`**, usamos el `gameover` donde está  
+`k.scene('gameover', () => {});`,  
+y esto va a importar:
+`import gameover from './scenes/gameover.js';`:
+```js
+k.scene('gameover', gameover);
+```
+
+>[!NOTE]  
+>Así se ve la pantalla cuando se termina el juego, es decir cuando
+>se llama la escena `gameover`:  
+>![](images/2024-11-14_172606.png)
