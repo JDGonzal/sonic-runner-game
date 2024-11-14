@@ -977,3 +977,60 @@ está en el suelo, entonces de reinicia el valor de `scoreMultiplier`:
 ```js
     if (sonic.isGrounded()) scoreMultiplier = 0;
 ```
+
+## 17. Continuando el proceso de `score`
+
+1. En el archivo **`sonic.js`**, agregamos una propiedad, justo antes
+de `setControls ()`:
+```js
+      ringCollectUI: null, // Añadido, luego se define
+```
+2. Antes del `return` de **`sonic.js`**, asignamos el valor a la 
+propiedad `ringCollectUI`:
+```js
+  sonic.ringCollectUI = sonic.add([
+    k.text('', { font: 'mania', size: 24 }),
+    k.color(255, 255, 0), // Yellow color
+    k.anchor('center'),
+    k.pos(30, -10),
+  ]);
+```
+3. Cuando colecto un `ring` (`sonic.onCollide('ring')`), pongo en
+`sonic.ringCollectUI` el texto de `'+1'` en **`game.js`** justo en el
+`sonic.onCollide('ring')`:
+```js
+    sonic.ringCollectUI.text = '+1';
+```
+3. Espero 1 segundo y desactivo este mensaje , debajo de 
+`...text = '+1';`:
+```js
+    k.wait(1, () => { sonic.ringCollectUI.text = ''; });
+```
+>[!NOTE]  
+>Justo depués de colisionar con un `ring` aparece el pintaje de
+>`'+1'`, frente a `sonic:`  
+>![](images/2024-11-11_182001.png)
+
+4. Aplicamos un proceso similar cuando `sonic` aplasta un `motobug`,
+dentro del `sonic.onCollide('enemy')` de **`game.js`**:
+```js
+      if (scoreMultiplier === 1) sonic.ringCollectUI.text = '+10';
+      else sonic.ringCollectUI.text = `x${scoreMultiplier}`;
+      k.wait(1, () => { sonic.ringCollectUI.text = ''; });
+```
+5. Vamos a añadir el código en el comentario
+`// TODO: Esto mismo con el puntaje` de **`game.js`**:
+```js
+    k.setData('current-score', score); // Paso el `score` a una variable
+```
+6. Creamos una constante al principio de la función `game()` del 
+archivo **`game.js`**, para almacenar un sonido:
+```js
+  const citySfx = k.play('city', { volume: 0.2, loop: true });
+```
+7. Esta constante la pasamos como un parámetro mas cuando se llama
+la escena `'gameover'` en **`game.js`**:
+```js
+    k.go('gameover', { citySfx }); // Se va a la escena final
+```
+  
