@@ -6,6 +6,8 @@ import { makeRing } from '../entities/ring.js';
 export default function game () {
   // Definimos la gravedad o caída d elos objetos
   k.setGravity(3100);
+  // Alamacenamos un sonido en una constante
+  const citySfx = k.play('city', { volume: 0.2, loop: true });
 
   // Copiamos de **`MainMenu.js`**
   const bgPieceWidth = 1920;
@@ -59,17 +61,25 @@ export default function game () {
       k.destroy(enemy); // Destruye el objeto
       sonic.play('jump'); // Suena música del salto
       sonic.jump(); // Toma un salto extra
+
+      // Incrementamos el puntaje
       scoreMultiplier += 1;
       score += 10 * scoreMultiplier;
       scoreText.text = `SCORE : ${score}`;
+
+      // Ponemos el cuanto incrementa delante de `sonic`
+      if (scoreMultiplier === 1) sonic.ringCollectUI.text = '+10';
+      else sonic.ringCollectUI.text = `x${scoreMultiplier}`;
+      k.wait(1, () => { sonic.ringCollectUI.text = ''; });
 
       // eslint-disable-next-line no-useless-return
       return;
     }
     // En caso de estar en el piso hace esto:
     k.play('hurt', { volume: 0.5 }); // Sonido de dolor
-    // TODO: Esto mismo con el puntaje
-    k.go('gameover'); // Se va a la escena final
+    k.setData('current-score', score); // Paso el `score` a una variable
+
+    k.go('gameover', { citySfx }); // Se va a la escena final
   });
 
   sonic.onCollide('ring', (ring) => { // Colisión `sonic`, `ring`
@@ -78,6 +88,9 @@ export default function game () {
 
     score++;
     scoreText.text = `SCORE : ${score}`;
+    sonic.ringCollectUI.text = '+1';
+    // Espero 1 segundo y desactivo este mensaje
+    k.wait(1, () => { sonic.ringCollectUI.text = ''; });
   });
 
   // Velociad del juego con valor inicial de 300
