@@ -79,7 +79,7 @@ export default function game () {
     k.play('hurt', { volume: 0.5 }); // Sonido de dolor
     k.setData('current-score', score); // Paso el `score` a una variable
 
-    k.go('gameover', { citySfx }); // Se va a la escena final
+    k.go('gameover', citySfx); // Se va a la escena final
   });
 
   sonic.onCollide('ring', (ring) => { // Colisión `sonic`, `ring`
