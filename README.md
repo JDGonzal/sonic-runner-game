@@ -1143,3 +1143,45 @@ k.scene('gameover', gameover);
 >Así se ve la pantalla cuando se termina el juego, es decir cuando
 >se llama la escena `gameover`:  
 >![](images/2024-11-14_172606.png)
+
+## 19. Completando la escena en el archivo **`gameover.js`**
+
+1. Damos una espera de 2 segundos y mostramos el mensaje, para
+reiniciar el juego y volver a la escena `game` otra vez, en el 
+archivo **`gameover`**:
+```js
+  k.wait(2, () => {
+    k.add([
+      k.text('Press Space/Click/Touch to Play Again', {
+        font: 'mania',
+        size: 64,
+      }),
+      k.anchor('center'),
+      k.pos(k.center().x, k.center().y + 350),
+    ]);
+    k.onButtonPress('jump', () => k.go('game'));
+  });
+```
+>[!TIP]  
+>Corrección en el archivo **`gameover.js`** para la constante
+>`currentRankBox` en la posición, era antes:  
+>`k.pos(k.center().x - 400, k.center().y + 50),`  
+>ahora es:  
+>`k.pos(k.center().x + 400, k.center().y + 50),`
+
+2. En el archivo **`gameover.js`** cambiamos el orden en la 
+condición de  
+`if (bestScore < currentScore)`:
+```js
+  if (bestScore < currentScore) {
+    bestScore = currentScore;
+    bestRank = currentRank;
+    k.setData('best-score', bestScore);
+  }
+```
+3. En el archivo **`game.js`**, cambio el llamado a la escena
+`'gameover'`, el envío del parámetro, no como objeto, sino como
+una simple variable, es decir eliminando las llaves `{}`:
+```js
+    k.go('gameover', citySfx); // Se va a la escena final
+```
