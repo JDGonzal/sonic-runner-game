@@ -1185,3 +1185,47 @@ una simple variable, es decir eliminando las llaves `{}`:
 ```js
     k.go('gameover', citySfx); // Se va a la escena final
 ```
+
+## 20. Como construir el Juego para distribución
+
+1. Creo en la raíz del proyecto el archivo **`vite.config.js`**, y 
+coloco esto en el código:
+```js
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  base: './',
+});
+```
+2. Abro la `TERMINAL` y detengo la ejecución de `pnomp dev`, si está
+en ejecución y luego corro este comando:
+```bash
+pnpm build
+```
+* El mostrará algo similar a esto:  
+![](images/2024-11-17_160226.png)
+3. Verificar en la raíz del proyecto una nueva carpeta de nombre
+"`dist`".
+4. En la `TERMINAL` ejecutamos el comando:
+```bash
+pnpm preview
+```
+* Así se vería ya el juego para subir a un servidor.
+
+>[!TIP]  
+>1. Si se quiere hacer pruebas en un celular para su ejecución,
+>hacemos este cambio en el archivo **`package.json`**
+>en la parte de los `"scripts:"`, añadimos esta línea:
+>```json
+>  "scripts": {
+>    ...
+>    "net": "vite ./ --host",
+>    ...
+>  },
+>```
+>2. En la `TERMINAL` detenemos ejecuciones y corremos este commando:
+>```js
+>pnpm net
+>```
+>3. Desde el browser de un celular accedemos a la url que aparece
+>como `➜  Network:`.
